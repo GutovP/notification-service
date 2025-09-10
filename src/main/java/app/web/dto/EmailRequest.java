@@ -1,4 +1,4 @@
-package org.email_service.web.dto;
+package app.web.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

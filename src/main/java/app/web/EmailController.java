@@ -1,10 +1,9 @@
-package org.email_service.web;
+package app.web;
 
-import org.email_service.model.Email;
-import org.email_service.repository.EmailRepository;
-import org.email_service.service.EmailService;
-import org.email_service.web.dto.EmailRequest;
-import org.email_service.web.dto.EmailResponse;
+import app.repository.EmailRepository;
+import app.service.EmailService;
+import app.web.dto.EmailRequest;
+import app.web.dto.EmailResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

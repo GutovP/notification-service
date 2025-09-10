@@ -1,4 +1,4 @@
-package org.email_service.model;
+package app.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

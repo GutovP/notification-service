@@ -1,6 +1,6 @@
-package org.email_service.web.dto;
+package app.web.dto;
 
-import org.email_service.model.Email;
+import app.model.Email;
 
 import java.time.LocalDateTime;
 
