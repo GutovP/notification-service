@@ -1,7 +1,7 @@
-package org.email_service.service;
+package app.service;
 
-import org.email_service.model.Email;
-import org.email_service.repository.EmailRepository;
+import app.model.Email;
+import app.repository.EmailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;

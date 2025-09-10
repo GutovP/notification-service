@@ -1,6 +1,6 @@
-package org.email_service.repository;
+package app.repository;
 
-import org.email_service.model.Email;
+import app.model.Email;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
