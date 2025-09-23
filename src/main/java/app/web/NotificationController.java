@@ -11,18 +11,18 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("api/v1/email")
-public class EmailController {
+@RequestMapping("api/v1/notifications")
+public class NotificationController {
 
     private final EmailService emailService;
     private final EmailRepository emailRepository;
 
-    public EmailController(EmailService emailService, EmailRepository emailRepository) {
+    public NotificationController(EmailService emailService, EmailRepository emailRepository) {
         this.emailService = emailService;
         this.emailRepository = emailRepository;
     }
 
-    @GetMapping("/history")
+    @GetMapping("/emails-history")
     public ResponseEntity<List<EmailResponse>> getEmailHistory() {
 
         List<EmailResponse> emails = emailRepository.findAll().stream()
@@ -32,7 +32,7 @@ public class EmailController {
         return ResponseEntity.ok(emails);
     }
 
-    @PostMapping("/send")
+    @PostMapping("/emails")
     public ResponseEntity<?> sendEmail(@RequestBody EmailRequest emailRequest) {
 
         emailService.sendEmail(emailRequest.getRecipient(), emailRequest.getSubject(), emailRequest.getBody());
