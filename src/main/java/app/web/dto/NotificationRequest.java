@@ -1,13 +1,16 @@
 package app.web.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-@Data
-public class EmailRequest {
+import java.util.UUID;
 
-    @NotBlank
-    private String recipient;
+@Data
+public class NotificationRequest {
+
+    @NotNull
+    private UUID userId;
 
     @NotBlank
     private String subject;

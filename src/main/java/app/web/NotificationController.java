@@ -1,43 +1,59 @@
 package app.web;
 
-import app.repository.EmailRepository;
-import app.service.EmailService;
-import app.web.dto.EmailRequest;
-import app.web.dto.EmailResponse;
+import app.model.Notification;
+import app.model.NotificationPreference;
+import app.service.NotificationService;
+import app.web.dto.NotificationRequest;
+import app.web.dto.NotificationResponse;
+import app.web.dto.NotificationPreferenceResponse;
+import app.web.dto.UpsertNotificationPreference;
+import app.web.mapper.DtoMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.UUID;
 
-import java.util.List;
-import java.util.Map;
+
 
 @RestController
-@RequestMapping("api/v1/notifications")
+@RequestMapping("/api/v1/notifications")
 public class NotificationController {
 
-    private final EmailService emailService;
-    private final EmailRepository emailRepository;
+    private final NotificationService notificationService;
 
-    public NotificationController(EmailService emailService, EmailRepository emailRepository) {
-        this.emailService = emailService;
-        this.emailRepository = emailRepository;
+    public NotificationController(NotificationService notificationService) {
+        this.notificationService = notificationService;
+
     }
 
-    @GetMapping("/emails-history")
-    public ResponseEntity<List<EmailResponse>> getEmailHistory() {
+    @PostMapping("/preferences")
+    public ResponseEntity<NotificationPreferenceResponse> upsertNotificationPreferences(@RequestBody UpsertNotificationPreference upsertNotificationPreference) {
 
-        List<EmailResponse> emails = emailRepository.findAll().stream()
-                .map(EmailResponse::fromEmailEntity)
-                .toList();
+        NotificationPreference notificationPreference = notificationService.upsertPreference(upsertNotificationPreference);
 
-        return ResponseEntity.ok(emails);
+        NotificationPreferenceResponse responseDto = DtoMapper.fromNotificationPreference(notificationPreference);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
-    @PostMapping("/emails")
-    public ResponseEntity<?> sendEmail(@RequestBody EmailRequest emailRequest) {
+    @GetMapping("/preferences")
+    public ResponseEntity<NotificationPreferenceResponse> getUserNotificationPreferences(@RequestParam(name = "userId") UUID userId) {
 
-        emailService.sendEmail(emailRequest.getRecipient(), emailRequest.getSubject(), emailRequest.getBody());
+        NotificationPreference notificationPreference = notificationService.getPreferenceByUserId(userId);
 
-        return ResponseEntity.ok().body(Map.of("message", "Email sent successfully"));
+        NotificationPreferenceResponse responseDto = DtoMapper.fromNotificationPreference(notificationPreference);
+
+        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+    }
+
+    @PostMapping
+    public ResponseEntity<NotificationResponse> sendNotification(@RequestBody NotificationRequest notificationRequest) {
+
+        Notification notification = notificationService.sendNotification(notificationRequest);
+
+        NotificationResponse response = DtoMapper.fromNotification(notification);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
 
     }
 }

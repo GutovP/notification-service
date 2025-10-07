@@ -14,14 +14,11 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Email {
+public class Notification {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-
-    @Column(nullable = false)
-    private String recipient;
 
     @Column(nullable = false)
     private String subject;
@@ -30,5 +27,17 @@ public class Email {
     private String body;
 
     @Column(nullable = false)
-    private LocalDateTime sentOn;
+    private LocalDateTime createdOn;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private NotificationStatus status;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private NotificationType type;
+
+    private UUID userId;
+
+    private boolean isDeleted;
 }
