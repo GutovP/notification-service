@@ -24,10 +24,6 @@ public class NotificationPreference {
     @Column(unique = true, nullable = false)
     private UUID userId;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private NotificationType type;
-
     private boolean isEnabled;
 
     @Column(nullable = false)

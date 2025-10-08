@@ -3,12 +3,10 @@ package app.service;
 import app.model.Notification;
 import app.model.NotificationPreference;
 import app.model.NotificationStatus;
-import app.model.NotificationType;
 import app.repository.NotificationRepository;
 import app.repository.NotificationPreferenceRepository;
 import app.web.dto.NotificationRequest;
 import app.web.dto.UpsertNotificationPreference;
-import app.web.mapper.DtoMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
@@ -53,7 +51,6 @@ public class NotificationService {
                 .subject(notificationRequest.getSubject())
                 .body(notificationRequest.getBody())
                 .createdOn(LocalDateTime.now())
-                .type(NotificationType.EMAIL)
                 .userId(userId)
                 .isDeleted(false)
                 .build();
@@ -77,7 +74,6 @@ public class NotificationService {
         if(userNotificationPreference.isPresent()) {
             NotificationPreference notificationPreference = userNotificationPreference.get();
 
-            notificationPreference.setType(DtoMapper.fromNotificationTypeRequest(dto.getType()));
             notificationPreference.setContactInfo(dto.getContactInfo());
             notificationPreference.setEnabled(dto.isNotificationEnabled());
             notificationPreference.setUpdatedOn(LocalDateTime.now());
@@ -87,7 +83,6 @@ public class NotificationService {
 
         NotificationPreference notificationPreference = NotificationPreference.builder()
                 .userId(dto.getUserId())
-                .type(DtoMapper.fromNotificationTypeRequest(dto.getType()))
                 .isEnabled(dto.isNotificationEnabled())
                 .contactInfo(dto.getContactInfo())
                 .createdOn(LocalDateTime.now())

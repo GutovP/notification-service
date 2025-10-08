@@ -1,7 +1,6 @@
 package app.web.dto;
 
 import app.model.NotificationStatus;
-import app.model.NotificationType;
 import lombok.Builder;
 import lombok.Data;
 
@@ -18,5 +17,4 @@ public class NotificationResponse {
 
     private NotificationStatus status;
 
-    private NotificationType type;
 }

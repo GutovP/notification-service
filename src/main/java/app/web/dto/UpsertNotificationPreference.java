@@ -15,9 +15,6 @@ public class UpsertNotificationPreference {
 
     private boolean notificationEnabled;
 
-    @NotNull
-    private NotificationTypeRequest type;
-
     @NotBlank
     private String contactInfo;
 }

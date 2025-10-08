@@ -1,6 +1,5 @@
 package app.web.dto;
 
-import app.model.NotificationType;
 import lombok.Builder;
 import lombok.Data;
 
@@ -13,8 +12,6 @@ public class NotificationPreferenceResponse {
     private UUID id;
 
     private UUID userId;
-
-    private NotificationType type;
 
     private boolean enabled;
 
