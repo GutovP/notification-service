@@ -14,6 +14,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -52,7 +53,7 @@ public class NotificationService {
                 .body(notificationRequest.getBody())
                 .createdOn(LocalDateTime.now())
                 .userId(userId)
-                .isDeleted(false)
+                .deleted(false)
                 .build();
 
         try {
@@ -96,5 +97,10 @@ public class NotificationService {
 
         return preferenceRepository.findByUserId(userId).orElseThrow(() -> new NullPointerException("Notification Preference for user id %s was not found.".formatted(userId)));
 
+    }
+
+    public List<Notification> getNotificationHistory(UUID userId) {
+
+        return notificationRepository.findAllByUserIdAndDeletedIsFalse(userId);
     }
 }

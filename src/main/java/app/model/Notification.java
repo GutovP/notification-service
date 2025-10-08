@@ -35,5 +35,5 @@ public class Notification {
 
     private UUID userId;
 
-    private boolean isDeleted;
+    private boolean deleted;
 }

@@ -11,6 +11,8 @@ import app.web.mapper.DtoMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 import java.util.UUID;
 
 
@@ -55,5 +57,16 @@ public class NotificationController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
 
+    }
+
+    @GetMapping
+    public ResponseEntity<List<NotificationResponse>> getNotificationHistory(@RequestParam(name = "userId")  UUID userId) {
+
+        List<NotificationResponse> notificationHistory = notificationService.getNotificationHistory(userId)
+                .stream()
+                .map(DtoMapper::fromNotification)
+                .toList();
+
+        return ResponseEntity.status(HttpStatus.OK).body(notificationHistory);
     }
 }
