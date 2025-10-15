@@ -3,10 +3,7 @@ package app.web;
 import app.model.Notification;
 import app.model.NotificationPreference;
 import app.service.NotificationService;
-import app.web.dto.NotificationRequest;
-import app.web.dto.NotificationResponse;
-import app.web.dto.NotificationPreferenceResponse;
-import app.web.dto.UpsertNotificationPreference;
+import app.web.dto.*;
 import app.web.mapper.DtoMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -68,5 +65,13 @@ public class NotificationController {
                 .toList();
 
         return ResponseEntity.status(HttpStatus.OK).body(notificationHistory);
+    }
+
+    @PostMapping("/restockAlert")
+    public ResponseEntity<Void> sendRestockAlert(@RequestBody RestockAlertRequest stockAlertRequest) {
+
+       notificationService.sendRestockAlert(stockAlertRequest);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

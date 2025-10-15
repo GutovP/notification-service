@@ -3,9 +3,12 @@ package app.service;
 import app.model.Notification;
 import app.model.NotificationPreference;
 import app.model.NotificationStatus;
+import app.model.RestockAlert;
 import app.repository.NotificationRepository;
 import app.repository.NotificationPreferenceRepository;
+import app.repository.RestockAlertRepository;
 import app.web.dto.NotificationRequest;
+import app.web.dto.RestockAlertRequest;
 import app.web.dto.UpsertNotificationPreference;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +27,14 @@ public class NotificationService {
 
     private final NotificationPreferenceRepository preferenceRepository;
     private final NotificationRepository notificationRepository;
+    private final RestockAlertRepository stockAlertRepository;
     private final MailSender mailSender;
 
     @Autowired
-    public NotificationService(NotificationPreferenceRepository notificationPreferenceRepository, NotificationRepository notificationRepository, MailSender mailSender) {
+    public NotificationService(NotificationPreferenceRepository notificationPreferenceRepository, NotificationRepository notificationRepository, RestockAlertRepository stockAlertRepository, MailSender mailSender) {
         this.preferenceRepository = notificationPreferenceRepository;
         this.notificationRepository = notificationRepository;
+        this.stockAlertRepository = stockAlertRepository;
         this.mailSender = mailSender;
     }
 
@@ -102,5 +107,24 @@ public class NotificationService {
     public List<Notification> getNotificationHistory(UUID userId) {
 
         return notificationRepository.findAllByUserIdAndDeletedIsFalse(userId);
+    }
+
+    public RestockAlert sendRestockAlert(RestockAlertRequest stockAlertRequest) {
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(stockAlertRequest.getRecipient());
+        message.setSubject(stockAlertRequest.getSubject());
+        message.setText(stockAlertRequest.getBody());
+
+        mailSender.send(message);
+
+        RestockAlert restockAlert = RestockAlert.builder()
+                .recipient(stockAlertRequest.getRecipient())
+                .subject(stockAlertRequest.getSubject())
+                .body(stockAlertRequest.getBody())
+                .sentOn(LocalDateTime.now())
+                .build();
+
+        return stockAlertRepository.save(restockAlert);
     }
 }
