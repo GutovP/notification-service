@@ -109,7 +109,7 @@ public class NotificationService {
         return notificationRepository.findAllByUserIdAndDeletedIsFalse(userId);
     }
 
-    public RestockAlert sendRestockAlert(RestockAlertRequest stockAlertRequest) {
+    public void sendRestockAlert(RestockAlertRequest stockAlertRequest) {
 
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(stockAlertRequest.getRecipient());
@@ -125,6 +125,6 @@ public class NotificationService {
                 .sentOn(LocalDateTime.now())
                 .build();
 
-        return stockAlertRepository.save(restockAlert);
+        stockAlertRepository.save(restockAlert);
     }
 }
