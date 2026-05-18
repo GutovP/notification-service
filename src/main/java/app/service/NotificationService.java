@@ -18,7 +18,7 @@ public class NotificationService {
 
     private final RestockAlertRepository stockAlertRepository;
     private final MailSender mailSender;
-    @Value("${app.mail.from:noreply@gutov.net}")
+    @Value("${app.mail.from:contact@gutov.net}")
     private String mailFrom;
     @Value("${app.mail.to:petar.gutov@gmail.com}")
     private String mailTo;
@@ -34,12 +34,8 @@ public class NotificationService {
         SimpleMailMessage message = new SimpleMailMessage();
 
         message.setSubject("Neue Kontaktanfrage von " + notificationRequest.getName());
-
-        // WICHTIG: Nutzt jetzt die feste Absenderadresse aus deinen Properties
         message.setFrom(mailFrom);
         message.setTo(mailTo);
-
-        // Erlaubt es dir, im E-Mail-Programm direkt auf die Mail des Kunden zu antworten
         message.setReplyTo(notificationRequest.getEmail());
 
         String phone = (notificationRequest.getPhoneNumber() != null && !notificationRequest.getPhoneNumber().isBlank())
