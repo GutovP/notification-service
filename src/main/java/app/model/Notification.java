@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -21,19 +20,18 @@ public class Notification {
     private UUID id;
 
     @Column(nullable = false)
-    private String subject;
+    private String name;
 
     @Column(nullable = false)
-    private String body;
+    private String email;
+
+    @Column
+    private String phoneNumber;
 
     @Column(nullable = false)
-    private LocalDateTime createdOn;
+    private String message;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private NotificationStatus status;
+    private LocalDateTime sendOn;
 
-    private UUID userId;
-
-    private boolean deleted;
 }
