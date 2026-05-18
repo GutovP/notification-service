@@ -31,19 +31,21 @@ public class NotificationService {
 
 
     public void sendNotification(NotificationRequest notificationRequest) {
-
         SimpleMailMessage message = new SimpleMailMessage();
 
         message.setSubject("Neue Kontaktanfrage von " + notificationRequest.getName());
-        message.setFrom(notificationRequest.getEmail());
+
+        // WICHTIG: Nutzt jetzt die feste Absenderadresse aus deinen Properties
+        message.setFrom(mailFrom);
         message.setTo(mailTo);
 
-        // Telefonnummer prüfen (da sie optional ist)
+        // Erlaubt es dir, im E-Mail-Programm direkt auf die Mail des Kunden zu antworten
+        message.setReplyTo(notificationRequest.getEmail());
+
         String phone = (notificationRequest.getPhoneNumber() != null && !notificationRequest.getPhoneNumber().isBlank())
                 ? notificationRequest.getPhoneNumber()
                 : "Nicht angegeben";
 
-        // Den E-Mail-Inhalt übersichtlich strukturieren
         String emailText = "Du hast eine neue Nachricht über das Kontaktformular erhalten:\n\n" +
                 "Name: " + notificationRequest.getName() + "\n" +
                 "E-Mail: " + notificationRequest.getEmail() + "\n" +
